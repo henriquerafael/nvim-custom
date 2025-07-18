@@ -42,37 +42,37 @@ Before you begin, make sure you have the following installed on your system:
 > [\!NOTE]
 > These instructions will clone this specific configuration into your Neovim config directory.
 
-\<details\>\<summary\> Linux and Mac (WSL/Ubuntu) \</summary\>
+<details><summary> Linux and Mac (WSL/Ubuntu) </summary>
 
-\`\`\`sh
+```sh
 git clone git@github.com:henriquerafael/nvim-custom.git "${XDG\_CONFIG\_HOME:-$HOME/.config}"/nvim
-\`\`\`
+```
 
-\</details\>
+</details>
 
-\<details\>\<summary\> Windows \</summary\>
+<details><summary> Windows </summary>
 
 If you're using `cmd.exe`:
 
-\`\`\`
+```sh
 git clone git@github.com:henriquerafael/nvim-custom.git "%localappdata%\\nvim"
-\`\`\`
+```
 
 If you're using `powershell.exe`:
 
-\`\`\`powershell
+```sh
 git clone git@github.com:henriquerafael/nvim-custom.git "${env:LOCALAPPDATA}\\nvim"
-\`\`\`
+```
 
-\</details\>
+</details>
 
 ### Post Installation
 
 Start Neovim:
 
-\`\`\`sh
+```sh
 nvim
-\`\`\`
+```
 
 That's it\! `lazy.nvim` will automatically install all the plugins. You can use the `:Lazy` command to view the current plugin status. Hit `q` to close the window.
 
@@ -118,7 +118,7 @@ Here are some of the most important keybindings to get you started. The leader k
 
 The configuration is organized logically to make it easy to customize:
 
-\`\`\`
+```
 \~/.config/nvim
 ├── lua/
 │   ├── config/
@@ -129,7 +129,7 @@ The configuration is organized logically to make it easy to customize:
 │   ├── keymaps.lua       -- Global keymappings
 │   └── options.lua       -- Core Neovim settings
 └── init.lua              -- The main entry point
-\`\`\`
+```
 
 To add a new plugin, simply create a new `.lua` file in the `lua/plugins/` directory. `lazy.nvim` will automatically load it.
 
