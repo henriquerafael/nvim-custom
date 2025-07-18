@@ -45,7 +45,7 @@ Before you begin, make sure you have the following installed on your system:
 <details><summary> Linux and Mac (WSL/Ubuntu) </summary>
 
 ```sh
-git clone git@github.com:henriquerafael/nvim-custom.git "${XDG\_CONFIG\_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/henriquerafael/nvim-custom.git "${XDG\_CONFIG\_HOME:-$HOME/.config}"/nvim
 ```
 
 </details>
@@ -55,13 +55,13 @@ git clone git@github.com:henriquerafael/nvim-custom.git "${XDG\_CONFIG\_HOME:-$H
 If you're using `cmd.exe`:
 
 ```sh
-git clone git@github.com:henriquerafael/nvim-custom.git "%localappdata%\\nvim"
+git clone https://github.com/henriquerafael/nvim-custom.git "%localappdata%\\nvim"
 ```
 
 If you're using `powershell.exe`:
 
 ```sh
-git clone git@github.com:henriquerafael/nvim-custom.git "${env:LOCALAPPDATA}\\nvim"
+git clone https://github.com/henriquerafael/nvim-custom.git "${env:LOCALAPPDATA}\\nvim"
 ```
 
 </details>
