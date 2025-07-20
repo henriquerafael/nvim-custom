@@ -45,7 +45,7 @@ Before you begin, make sure you have the following installed on your system:
 <details><summary> Linux and Mac (WSL/Ubuntu) </summary>
 
 ```sh
-git clone https://github.com/henriquerafael/nvim-custom.git "${XDG\_CONFIG\_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/henriquerafael/nvim-custom.git "${XDG\CONFIG\HOME:-$HOME/.config}"/nvim
 ```
 
 </details>
