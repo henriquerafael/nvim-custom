@@ -37,15 +37,18 @@ opt.cmdheight = 1 -- Set the height of the command-line area to 1.
 -- Prevent layout shifts from the sign column (used for git signs, diagnostics, etc.)
 opt.signcolumn = "yes"
 
+-- Provider Clipboard
+--opt.clipboard = "unnamedplus"
+opt.mouse = ""
 --------------------------------------------------------------------------------
 --  Section 2: Indentation and Tabs
 --------------------------------------------------------------------------------
 
-opt.expandtab = true      -- Use spaces instead of tabs.
-opt.tabstop = 2           -- Number of visual spaces per tab.
-opt.softtabstop = 2       -- Number of spaces inserted when pressing <Tab>.
-opt.shiftwidth = 2        -- Number of spaces to use for auto-indentation.
-opt.smartindent = true    -- Enable smart auto-indenting for new lines.
+opt.expandtab = true   -- Use spaces instead of tabs.
+opt.tabstop = 2        -- Number of visual spaces per tab.
+opt.softtabstop = 2    -- Number of spaces inserted when pressing <Tab>.
+opt.shiftwidth = 2     -- Number of spaces to use for auto-indentation.
+opt.smartindent = true -- Enable smart auto-indenting for new lines.
 
 --------------------------------------------------------------------------------
 --  Section 3: File and Buffer Management
@@ -114,4 +117,3 @@ opt.fillchars = { eob = " " }
 -- Control how comments are handled.
 -- This removes auto-wrapping and auto-insertion of comment leaders.
 opt.formatoptions:remove { "c", "r", "o" }
-

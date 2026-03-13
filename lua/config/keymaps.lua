@@ -21,12 +21,12 @@ end
 
 -- --- My Personal keymaps
 -- Witre (:w) keymap
-map('n', '<leader>w', ':w<CR>', {desc = 'Write file in normal mode'})
-map('i', '<leader>w', '<Esc>:w<CR>', {desc = 'Write file in insert mode'})
+map('n', '<leader>w', ':w<CR>', { desc = 'Write file in normal mode' })
+map('i', '<leader>w', '<Esc>:w<CR>', { desc = 'Write file in insert mode' })
 
 -- Refreshenv (:source)
-map('n', '<leader>sc', ':so<CR>', {desc = 'Refresh env in normal mode'})
-map('i', '<leader>sc', '<Esc>:so<CR>', {desc = 'Refresh env in insert mode'})
+map('n', '<leader>sc', ':so<CR>', { desc = 'Refresh env in normal mode' })
+map('i', '<leader>sc', '<Esc>:so<CR>', { desc = 'Refresh env in insert mode' })
 
 -- --- Normal Mode Keymaps ---
 
@@ -87,3 +87,14 @@ map('t', '<esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- For example, for a file explorer like neo-tree:
 -- map('n', '<leader>e', '<cmd>Neotree toggle<CR>', { desc = 'Toggle file explorer' })
 
+-- File: lua/config/keymaps.lua
+-- ... (add this to the end of your file)
+
+-- --- Tab Management ---
+map('n', '<leader>tn', '<cmd>tabnew<CR>', { desc = '[T]ab [N]ew' })
+map('n', '<leader>tc', '<cmd>tabclose<CR>', { desc = '[T]ab [C]lose' })
+map('n', '<leader>to', '<cmd>tabonly<CR>', { desc = '[T]ab Close [O]thers' })
+
+-- Navigate tabs (improving on existing mappings)
+map('n', '<S-l>', '<cmd>tabnext<CR>', { desc = 'Next Tab' })
+map('n', '<S-h>', '<cmd>tabprevious<CR>', { desc = 'Previous Tab' })
