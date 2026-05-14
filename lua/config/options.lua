@@ -117,3 +117,17 @@ opt.fillchars = { eob = " " }
 -- Control how comments are handled.
 -- This removes auto-wrapping and auto-insertion of comment leaders.
 opt.formatoptions:remove { "c", "r", "o" }
+
+vim.filetype.add({
+  extension = {
+    yml = "yaml",
+    yaml = "yaml",
+    tfvars = "terraform",
+  },
+  filename = {
+    ["docker-compose.yml"] = "yaml",
+  },
+})
+
+-- True color
+opt.termguicolors = true

@@ -61,7 +61,7 @@ return {
 
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-      if client.supports_method('textDocument/formatting') then
+      if client:supports_method('textDocument/formatting') then
         local group = vim.api.nvim_create_augroup('LspFormatting', { clear = true })
         vim.api.nvim_create_autocmd('BufWritePre', {
           group = group,
@@ -78,6 +78,8 @@ return {
     --------------------------------------------------------------------------
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
+    local root = vim.fs.root(0, { ".git", "package.json", "pyproject.toml" })
+
     --------------------------------------------------------------------------
     -- Configuração explícita de cada servidor
     --------------------------------------------------------------------------
@@ -86,36 +88,42 @@ return {
     vim.lsp.config["ansiblels"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
     }
 
     -- Bash
     vim.lsp.config["bashls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
     }
 
     -- CSS
     vim.lsp.config["cssls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
     }
 
     -- HTML
     vim.lsp.config["html"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
     }
 
     -- JSON
     vim.lsp.config["jsonls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
     }
 
     -- Lua
     vim.lsp.config["lua_ls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
       settings = {
         Lua = {
           diagnostics = { globals = { "vim" } },
@@ -128,12 +136,14 @@ return {
     vim.lsp.config["marksman"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
     }
 
     -- Python
     vim.lsp.config["pyright"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
     }
 
     -- Terraform
@@ -145,6 +155,7 @@ return {
     vim.lsp.config["terraformls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
       settings = {
         terraform = {
           languageServer = {
@@ -154,10 +165,13 @@ return {
       },
     }
 
+    vim.lsp.start(vim.lsp.config["terraformls"])
+
     -- YAML (com suporte a Ansible)
     vim.lsp.config["yamlls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
+      root_dir = root,
       settings = {
         yaml = {
           schemas = {

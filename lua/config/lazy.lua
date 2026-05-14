@@ -46,21 +46,25 @@ require("lazy").setup({
     notify = true, -- Notify when a change is detected and prompt to reload Neovim.
   },
 
+  rocks = {
+    enabled = false,
+  },
+
   -- Optional: Add some performance optimizations.
---   performance = {
---     rtp = {
---       -- Disable some built-in plugins that are often replaced by more modern alternatives.
---       -- This can slightly speed up startup time.
---       disabled_plugins = {
---         "gzip",
---         "matchit",
---         "matchparen",
---         "netrwPlugin",
---         "tarPlugin",
---         "tohtml",
---         "tutor",
---         "zipPlugin",
---       },
---     },
---   },
+  --   performance = {
+  --     rtp = {
+  --       -- Disable some built-in plugins that are often replaced by more modern alternatives.
+  --       -- This can slightly speed up startup time.
+  --       disabled_plugins = {
+  --         "gzip",
+  --         "matchit",
+  --         "matchparen",
+  --         "netrwPlugin",
+  --         "tarPlugin",
+  --         "tohtml",
+  --         "tutor",
+  --         "zipPlugin",
+  --       },
+  --     },
+  --   },
 })
