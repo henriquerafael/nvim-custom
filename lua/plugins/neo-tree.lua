@@ -31,6 +31,26 @@ return {
           noremap = true,
           nowait = true,
         },
+        -- Keymaps for interacting with the tree
+        -- These are the default mappings, but listed here for clarity.
+        mappings = {
+          ['<cr>'] = 'open',
+          ['o'] = 'open',
+          ['<esc>'] = 'cancel', -- Close the tree
+          ['P'] = { 'toggle_preview', config = { use_float = true } },
+          ['a'] = 'add',
+          ['d'] = 'delete',
+          ['r'] = 'rename',
+          ['c'] = 'copy',
+          ['m'] = 'move',
+          ['q'] = 'close_window',
+          ['H'] = 'toggle_hidden',
+          ['gI'] = 'toggle_gitignore',
+          ['R'] = 'refresh',
+          ['?'] = 'show_help',
+          ['<'] = 'prev_source',
+          ['>'] = 'next_source',
+        },
       },
       -- Filesystem source configuration
       filesystem = {
@@ -65,26 +85,6 @@ return {
           staged    = 's',
           conflict  = 'c',
         },
-      },
-      -- Keymaps for interacting with the tree
-      -- These are the default mappings, but listed here for clarity.
-      mappings = {
-        ['<cr>'] = 'open',
-        ['o'] = 'open',
-        ['<esc>'] = 'cancel', -- Close the tree
-        ['P'] = { 'toggle_preview', config = { use_float = true } },
-        ['a'] = 'add',
-        ['d'] = 'delete',
-        ['r'] = 'rename',
-        ['c'] = 'copy',
-        ['m'] = 'move',
-        ['q'] = 'close_window',
-        ['H'] = 'toggle_hidden',
-        ['gI'] = 'toggle_gitignore',
-        ['R'] = 'refresh',
-        ['?'] = 'show_help',
-        ['<'] = 'prev_source',
-        ['>'] = 'next_source',
       },
     })
 

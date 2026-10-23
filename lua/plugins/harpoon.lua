@@ -26,10 +26,9 @@ return {
       vim.notify('File added to harpoon list', vim.log.levels.INFO)
     end, { desc = '[H]arpoon [A]dd file' })
 
-    -- Toggle the main harpoon UI (Telescope integration)
+    -- Toggle the main harpoon UI
     keymap.set('n', '<leader>he', function()
-      local harpoon_ui = require('harpoon.ui')
-      harpoon_ui.toggle_quick_menu(harpoon:list())
+      harpoon.ui:toggle_quick_menu(harpoon:list())
     end, { desc = '[H]arpoon [E]dit list' })
 
     -- --- Navigation ---
@@ -42,7 +41,20 @@ return {
 
     -- You can also use Telescope to fuzzy find from your harpoon list
     keymap.set('n', '<leader>hf', function()
-      require('telescope').extensions.harpoon.marks()
+      local conf = require('telescope.config').values
+      local file_paths = {}
+      for _, item in ipairs(harpoon:list().items) do
+        table.insert(file_paths, item.value)
+      end
+
+      require('telescope.pickers').new({}, {
+        prompt_title = 'Harpoon',
+        finder = require('telescope.finders').new_table({
+          results = file_paths,
+        }),
+        previewer = conf.file_previewer({}),
+        sorter = conf.generic_sorter({}),
+      }):find()
     end, { desc = '[H]arpoon [F]ind file' })
   end,
 }

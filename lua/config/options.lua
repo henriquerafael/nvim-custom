@@ -14,8 +14,11 @@ local opt = vim.opt
 -- Set the leader key.
 -- The leader key is a personal preference, but space is a common and ergonomic choice.
 -- It must be set before any keymaps are defined.
--- vim.g.mapleader = ' '
--- vim.g.maplocalleader = '\\'
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+-- Enable Nerd Font support for plugins (Telescope, Neo-tree, Lualine, Trouble)
+vim.g.have_nerd_font = true
 
 -- Line Numbers
 opt.number = true         -- Show line numbers on the left.
@@ -128,6 +131,3 @@ vim.filetype.add({
     ["docker-compose.yml"] = "yaml",
   },
 })
-
--- True color
-opt.termguicolors = true

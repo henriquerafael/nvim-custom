@@ -10,29 +10,13 @@ return {
     'williamboman/mason-lspconfig.nvim',
     'hrsh7th/cmp-nvim-lsp',
     'nvim-telescope/telescope.nvim',
+    'b0o/SchemaStore.nvim',
   },
 
   config = function()
-    -- Inicializa Mason e Mason-LSPConfig
-    require("mason").setup()
-    require("mason-lspconfig").setup({
-      ensure_installed = {
-        'ansiblels',
-        'bashls',
-        'cssls',
-        'html',
-        'jsonls',
-        'lua_ls',
-        'marksman',
-        'pyright',
-        'terraformls',
-        'yamlls',
-      },
-      automatic_installation = true,
-    })
-
     --------------------------------------------------------------------------
-    -- Função de inicialização comum (keymaps e formatação on save)
+    -- Função de inicialização comum (keymaps de LSP)
+    -- Nota: A formatação on-save é gerenciada pelo conform.nvim (com fallback LSP)
     --------------------------------------------------------------------------
     local on_attach = function(client, bufnr)
       local function map(mode, lhs, rhs, desc)
@@ -51,34 +35,22 @@ return {
       map('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
       map('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
       map('n', 'K', vim.lsp.buf.hover, 'Hover Documentation')
-      map('n', '<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+      map('n', 'gK', vim.lsp.buf.signature_help, 'Signature Documentation')
       map('n', '<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
       map('n', '<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-      map('n', '[d', vim.diagnostic.goto_prev, 'Previous Diagnostic')
-      map('n', ']d', vim.diagnostic.goto_next, 'Next Diagnostic')
+      map('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end, 'Previous Diagnostic')
+      map('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end, 'Next Diagnostic')
       map('n', '<leader>df', vim.diagnostic.open_float, 'Diagnostic Float')
       map('n', '<leader>dq', vim.diagnostic.setloclist, 'Diagnostics Quickfix')
 
-      vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-      if client:supports_method('textDocument/formatting') then
-        local group = vim.api.nvim_create_augroup('LspFormatting', { clear = true })
-        vim.api.nvim_create_autocmd('BufWritePre', {
-          group = group,
-          buffer = bufnr,
-          callback = function()
-            vim.lsp.buf.format({ bufnr = bufnr })
-          end,
-        })
-      end
+      vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
     end
 
     --------------------------------------------------------------------------
     -- Capabilities (autocompletar com nvim-cmp)
     --------------------------------------------------------------------------
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-    local root = vim.fs.root(0, { ".git", "package.json", "pyproject.toml" })
+    local schemastore_ok, schemastore = pcall(require, 'schemastore')
 
     --------------------------------------------------------------------------
     -- Configuração explícita de cada servidor
@@ -88,42 +60,42 @@ return {
     vim.lsp.config["ansiblels"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
     }
 
     -- Bash
     vim.lsp.config["bashls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
     }
 
     -- CSS
     vim.lsp.config["cssls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
     }
 
     -- HTML
     vim.lsp.config["html"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
     }
 
-    -- JSON
+    -- JSON (integrado ao SchemaStore.nvim)
     vim.lsp.config["jsonls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
+      settings = {
+        json = {
+          schemas = schemastore_ok and schemastore.json.schemas() or {},
+          validate = { enable = true },
+        },
+      },
     }
 
     -- Lua
     vim.lsp.config["lua_ls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
       settings = {
         Lua = {
           diagnostics = { globals = { "vim" } },
@@ -136,14 +108,12 @@ return {
     vim.lsp.config["marksman"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
     }
 
     -- Python
     vim.lsp.config["pyright"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
     }
 
     -- Terraform
@@ -155,7 +125,6 @@ return {
     vim.lsp.config["terraformls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
       settings = {
         terraform = {
           languageServer = {
@@ -165,35 +134,40 @@ return {
       },
     }
 
-    vim.lsp.start(vim.lsp.config["terraformls"])
+    -- YAML (integrado ao SchemaStore.nvim + suporte a Ansible)
+    local yaml_schemas = schemastore_ok and schemastore.yaml.schemas() or {}
+    yaml_schemas['https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook'] =
+      '/*{.ansible.yml,.ansible.yaml,playbook.yml}'
 
-    -- YAML (com suporte a Ansible)
     vim.lsp.config["yamlls"] = {
       on_attach = on_attach,
       capabilities = capabilities,
-      root_dir = root,
       settings = {
         yaml = {
-          schemas = {
-            ['https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook'] =
-            '/*{.ansible.yml,.ansible.yaml,playbook.yml}',
+          schemaStore = {
+            -- Desabilita o schema store embutido para usar o b0o/SchemaStore.nvim
+            enable = false,
+            url = "",
           },
+          schemas = yaml_schemas,
         },
       },
     }
 
     --------------------------------------------------------------------------
-    -- Inicializa todos os servidores declarados
+    -- Habilita os servidores declarados sob demanda por FileType
     --------------------------------------------------------------------------
-    vim.lsp.start(vim.lsp.config["ansiblels"])
-    vim.lsp.start(vim.lsp.config["bashls"])
-    vim.lsp.start(vim.lsp.config["cssls"])
-    vim.lsp.start(vim.lsp.config["html"])
-    vim.lsp.start(vim.lsp.config["jsonls"])
-    vim.lsp.start(vim.lsp.config["lua_ls"])
-    vim.lsp.start(vim.lsp.config["marksman"])
-    vim.lsp.start(vim.lsp.config["pyright"])
-    vim.lsp.start(vim.lsp.config["terraformls"])
-    vim.lsp.start(vim.lsp.config["yamlls"])
+    vim.lsp.enable({
+      "ansiblels",
+      "bashls",
+      "cssls",
+      "html",
+      "jsonls",
+      "lua_ls",
+      "marksman",
+      "pyright",
+      "terraformls",
+      "yamlls",
+    })
   end,
 }

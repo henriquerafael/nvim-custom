@@ -9,7 +9,7 @@ local function map(mode, lhs, rhs, opts)
   if opts then
     options = vim.tbl_extend('force', options, opts)
   end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- --- Global Settings ---
@@ -20,13 +20,8 @@ end
 -- vim.g.maplocalleader = ' '
 
 -- --- My Personal keymaps
--- Witre (:w) keymap
-map('n', '<leader>w', ':w<CR>', { desc = 'Write file in normal mode' })
-map('i', '<leader>w', '<Esc>:w<CR>', { desc = 'Write file in insert mode' })
-
 -- Refreshenv (:source)
-map('n', '<leader>sc', ':so<CR>', { desc = 'Refresh env in normal mode' })
-map('i', '<leader>sc', '<Esc>:so<CR>', { desc = 'Refresh env in insert mode' })
+map('n', '<leader>sc', '<cmd>so<CR>', { desc = 'Refresh env in normal mode' })
 
 -- --- Normal Mode Keymaps ---
 
@@ -44,7 +39,7 @@ map('n', '<leader>sx', '<cmd>close<CR>', { desc = '[S]plit close [X]' })
 
 -- Buffer Navigation
 map('n', '<S-l>', '<cmd>bnext<CR>', { desc = 'Next buffer' })
-map('n', 'H', '<cmd>bprevious<CR>', { desc = 'Previous buffer' })
+map('n', '<S-h>', '<cmd>bprevious<CR>', { desc = 'Previous buffer' })
 map('n', '<leader>bd', '<cmd>bdelete<CR>', { desc = '[B]uffer [D]elete' })
 
 -- Clear search highlight
@@ -87,14 +82,11 @@ map('t', '<esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- For example, for a file explorer like neo-tree:
 -- map('n', '<leader>e', '<cmd>Neotree toggle<CR>', { desc = 'Toggle file explorer' })
 
--- File: lua/config/keymaps.lua
--- ... (add this to the end of your file)
-
 -- --- Tab Management ---
 map('n', '<leader>tn', '<cmd>tabnew<CR>', { desc = '[T]ab [N]ew' })
 map('n', '<leader>tc', '<cmd>tabclose<CR>', { desc = '[T]ab [C]lose' })
 map('n', '<leader>to', '<cmd>tabonly<CR>', { desc = '[T]ab Close [O]thers' })
 
--- Navigate tabs (improving on existing mappings)
-map('n', '<S-l>', '<cmd>tabnext<CR>', { desc = 'Next Tab' })
-map('n', '<S-h>', '<cmd>tabprevious<CR>', { desc = 'Previous Tab' })
+-- Navigate tabs without conflicting with Buffer Navigation (<S-l>/<S-h>)
+map('n', ']t', '<cmd>tabnext<CR>', { desc = 'Next Tab' })
+map('n', '[t', '<cmd>tabprevious<CR>', { desc = 'Previous Tab' })

@@ -25,8 +25,8 @@ return {
       start_in_insert = true,
       -- Persist the terminal buffer
       persist_size = true,
-      direction = 'float',
-      close_on_exit = true, -- Close the terminal window when the process exits
+      direction = 'horizontal', -- 'horizontal', 'vertical', 'tab', 'float'
+      close_on_exit = true,     -- Close the terminal window when the process exits
       float_opts = {
         -- Options for floating terminals
         border = 'curved',
@@ -66,7 +66,7 @@ return {
     keymap.set('n', '<leader>gg', create_term('lazygit', 'float'), { desc = '[G]it [G]ui (lazygit)' })
 
     -- Node terminal
-    keymap.set('n', '<leader>tn', create_term('node', 'float'), { desc = '[T]erminal [N]ode' })
+    keymap.set('n', '<leader>tN', create_term('node', 'float'), { desc = '[T]erminal [N]ode' })
 
     -- Python terminal
     keymap.set('n', '<leader>tp', create_term('python', 'float'), { desc = '[T]erminal [P]ython' })

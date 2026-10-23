@@ -7,7 +7,7 @@
 -- It checks if the lazy.nvim directory exists and, if not, clones it from GitHub.
 -- This makes your configuration portable and easy to set up on a new machine.
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
